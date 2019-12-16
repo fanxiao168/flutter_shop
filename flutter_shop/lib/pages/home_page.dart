@@ -18,11 +18,12 @@ class _HomePageState extends State<HomePage>
   String homePageContent = '正在请求数据...';
   @override
   Widget build(BuildContext context) {
+    var formData = {'lon': '115.02932', 'lat': '35.76189'};
     return Container(
       child: Scaffold(
           appBar: AppBar(title: Text('百姓生活+')),
           body: FutureBuilder(
-            future: getHomePageContent(),
+            future: request('homePageContent',formData:formData),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 //数据处理
@@ -67,6 +68,8 @@ class _HomePageState extends State<HomePage>
                       FloorContent(floorGoodsList: floor2),
                       FloorTitle(picture_address: floor3Title),
                       FloorContent(floorGoodsList: floor3),
+                      HotGoods(),
+
 
                     ],
                   ),
@@ -319,6 +322,30 @@ class FloorContent extends StatelessWidget {
         onTap: () {},
         child: Image.network(goods['image']),
       ),
+    );
+  }
+}
+
+
+//火爆专区
+class HotGoods extends StatefulWidget {
+  @override
+  _HotGoodsState createState() => _HotGoodsState();
+}
+
+class _HotGoodsState extends State<HotGoods> {
+
+  @override
+  void initState() {
+    super.initState();
+    request('homePageBelowConten', formData:1).then((value){
+      print(value);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('jspang'),
     );
   }
 }
