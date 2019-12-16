@@ -4,28 +4,26 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 class HomePage extends StatefulWidget {
-  
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
-
-
   int page = 1;
   List<Map> hotGoodsList = [];
 
+  
   @override
   bool get wantKeepAlive => true;
 
-@override
-void initState() { 
-  super.initState();
-  _getHotGoods();
-}
+  @override
+  void initState() {
+    super.initState();
+  }
 
   String homePageContent = '正在请求数据...';
   @override
@@ -35,7 +33,7 @@ void initState() {
       child: Scaffold(
           appBar: AppBar(title: Text('百姓生活+')),
           body: FutureBuilder(
-            future: request('homePageContent',formData:formData),
+            future: request('homePageContent', formData: formData),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 //数据处理
@@ -52,21 +50,17 @@ void initState() {
 
                 String floor1Title =
                     data['data']['floor1Pic']['PICTURE_ADDRESS'];
-                List<Map> floor1 =
-                    (data['data']['floor1'] as List).cast();
+                List<Map> floor1 = (data['data']['floor1'] as List).cast();
                 String floor2Title =
                     data['data']['floor2Pic']['PICTURE_ADDRESS'];
-                List<Map> floor2 =
-                    (data['data']['floor2'] as List).cast();
+                List<Map> floor2 = (data['data']['floor2'] as List).cast();
                 String floor3Title =
                     data['data']['floor3Pic']['PICTURE_ADDRESS'];
-                List<Map> floor3 =
-                    (data['data']['floor3'] as List).cast();
-          
-                    
+                List<Map> floor3 = (data['data']['floor3'] as List).cast();
 
-                return SingleChildScrollView(
-                  child: Column(
+                return EasyRefresh(
+                
+                  child: ListView(
                     children: <Widget>[
                       SwiperDiy(swiperDataList: swiper),
                       TopNavigator(navigatorList: navigatorList),
@@ -81,9 +75,22 @@ void initState() {
                       FloorTitle(picture_address: floor3Title),
                       FloorContent(floorGoodsList: floor3),
                       _hotGoods(),
-
                     ],
                   ),
+                  onLoad: () async {
+                    print('开始加载更多....');
+                    var formData = {'page': page};
+                    request('homePageBelowConten', formData: formData)
+                        .then((val) {
+                      print(val);
+                      var data = json.decode(val.toString());
+                      List<Map> newGoodsList = (data['data'] as List).cast();
+                      setState(() {
+                        hotGoodsList.addAll(newGoodsList);
+                        page++;
+                      });
+                    });
+                  },
                 );
               } else {
                 return Center(
@@ -95,20 +102,7 @@ void initState() {
     );
   }
 
-//获取热销商品数据
-  void _getHotGoods(){
-    var formData = {'page':page};
-    request('homePageBelowConten', formData:formData).then((val){
-      print(val);
-      var data = json.decode(val.toString());
-      List<Map> newGoodsList = (data['data'] as List).cast();
-      setState(() {
-        hotGoodsList.addAll(newGoodsList);
-        page++;
-      });
-    });
-  }
-
+//热销商品
   Widget hotTitle = Container(
     margin: EdgeInsets.only(top: 10.0),
     alignment: Alignment.center,
@@ -117,32 +111,32 @@ void initState() {
     padding: EdgeInsets.all(5.0),
   );
 
-  Widget _wrapList(){
-    
-    if(hotGoodsList.length != 0){
-      List<Widget> listWidget = hotGoodsList.map((val){
+  Widget _wrapList() {
+    if (hotGoodsList.length != 0) {
+      List<Widget> listWidget = hotGoodsList.map((val) {
         return InkWell(
-          onTap: (){},
+          onTap: () {},
           child: Container(
             width: ScreenUtil().setWidth(372),
             color: Colors.white,
             padding: EdgeInsets.all(5.0),
             child: Column(
               children: <Widget>[
-                Image.network(val['image'],width:ScreenUtil().setWidth(370)),
+                Image.network(val['image'], width: ScreenUtil().setWidth(370)),
                 Text(
                   val['name'],
-                  maxLines:1,
-                  overflow:TextOverflow.ellipsis,
-                  style:TextStyle(color: Colors.pink,fontSize:ScreenUtil().setSp(26)),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.pink, fontSize: ScreenUtil().setSp(26)),
                 ),
                 Row(
                   children: <Widget>[
                     Text('¥${val['mallPrice']}'),
-                    Text(
-                      '¥${val['price']}',
-                      style:TextStyle(color: Colors.black26,decoration: TextDecoration.lineThrough)
-                    )
+                    Text('¥${val['price']}',
+                        style: TextStyle(
+                            color: Colors.black26,
+                            decoration: TextDecoration.lineThrough))
                   ],
                 )
               ],
@@ -155,22 +149,18 @@ void initState() {
         spacing: 2,
         children: listWidget,
       );
-    }else{
+    } else {
       return Text('');
     }
   }
 
-  Widget _hotGoods(){
+  Widget _hotGoods() {
     return Container(
       child: Column(
-        children: <Widget>[
-          hotTitle,
-          _wrapList()
-        ],
+        children: <Widget>[hotTitle, _wrapList()],
       ),
     );
   }
-
 }
 
 //首页轮播组件
