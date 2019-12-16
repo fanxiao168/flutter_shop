@@ -10,8 +10,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
- 
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -37,6 +37,21 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                 List<Map> recommendList =
                     (data['data']['recommend'] as List).cast();
 
+                String floor1Title =
+                    data['data']['floor1Pic']['PICTURE_ADDRESS'];
+                List<Map> floor1 =
+                    (data['data']['floor1'] as List).cast();
+                String floor2Title =
+                    data['data']['floor2Pic']['PICTURE_ADDRESS'];
+                List<Map> floor2 =
+                    (data['data']['floor2'] as List).cast();
+                String floor3Title =
+                    data['data']['floor3Pic']['PICTURE_ADDRESS'];
+                List<Map> floor3 =
+                    (data['data']['floor3'] as List).cast();
+          
+                    
+
                 return SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -46,6 +61,13 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       LeaderPhone(
                           leaderImage: leaderImage, leaderPhone: leaderPhone),
                       Recommend(recommendList: recommendList),
+                      FloorTitle(picture_address: floor1Title),
+                      FloorContent(floorGoodsList: floor1),
+                      FloorTitle(picture_address: floor2Title),
+                      FloorContent(floorGoodsList: floor2),
+                      FloorTitle(picture_address: floor3Title),
+                      FloorContent(floorGoodsList: floor3),
+
                     ],
                   ),
                 );
@@ -194,8 +216,7 @@ class Recommend extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         decoration: BoxDecoration(
             color: Colors.white,
-            border:
-                Border(left: BorderSide(width: 1, color: Colors.black12))),
+            border: Border(left: BorderSide(width: 1, color: Colors.black12))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -233,6 +254,70 @@ class Recommend extends StatelessWidget {
       margin: EdgeInsets.only(top: 10.0),
       child: Column(
         children: <Widget>[_titleWidget(), _recommedList()],
+      ),
+    );
+  }
+}
+
+//楼层标题
+class FloorTitle extends StatelessWidget {
+  final String picture_address;
+
+  FloorTitle({Key key, this.picture_address}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Image.network(picture_address),
+    );
+  }
+}
+
+//楼层商品列表
+class FloorContent extends StatelessWidget {
+  final List floorGoodsList;
+
+  FloorContent({Key key, this.floorGoodsList}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[_firstRow(), _otherGoods()],
+      ),
+    );
+  }
+
+  Widget _firstRow() {
+    return Row(
+      children: <Widget>[
+        _goodsItem(floorGoodsList[0]),
+        Column(
+          children: <Widget>[
+            _goodsItem(floorGoodsList[1]),
+            _goodsItem(floorGoodsList[2]),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _otherGoods() {
+    return Row(
+      children: <Widget>[
+        _goodsItem(floorGoodsList[3]),
+        _goodsItem(floorGoodsList[4]),
+      ],
+    );
+  }
+
+  Widget _goodsItem(Map goods) {
+    return Container(
+      width: ScreenUtil().setWidth(375),
+      child: InkWell(
+        onTap: () {},
+        child: Image.network(goods['image']),
       ),
     );
   }
