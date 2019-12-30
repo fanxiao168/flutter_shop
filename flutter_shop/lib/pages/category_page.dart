@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../service/service_method.dart';
 import 'dart:convert';
 import '../model/category.dart';
+import '../model/categoryGoodsList.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../provide/child_category.dart';
 import 'package:provide/provide.dart';
@@ -181,7 +184,8 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
 
     await request('getMallGoods',formData:data).then((val){
       var data = json.decode(val.toString());
-      print('分类商品列表:》》》》》》$val');
+      CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
+     print('>>>>>>>:${goodsList.data[0].goodsName}');
     });
   }
 }
