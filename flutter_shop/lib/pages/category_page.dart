@@ -80,7 +80,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
         height: ScreenUtil().setHeight(100),
         padding: EdgeInsets.only(left: 10, top: 20),
         decoration: BoxDecoration(
-            color: isClick ? Colors.black26 : Colors.white,
+            color: isClick ? Color.fromRGBO(236, 236, 236, 1.0) : Colors.white,
             border:
                 Border(bottom: BorderSide(width: 1, color: Colors.black12))),
         child: Text(
@@ -99,6 +99,9 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
       setState(() {
         list = category.data;
       });
+
+      Provide.value<ChildCategory>(context).getChildCategory(list[0].bxMallSubDto);
+
     });
   }
 }
@@ -109,7 +112,7 @@ class RightCategoryNav extends StatefulWidget {
 }
 
 class _RightCategoryNavState extends State<RightCategoryNav> {
-  //List list = ['名酒','宝丰','北京二锅头','舍得','五粮液','茅台','散白'];
+
   @override
   Widget build(BuildContext context) {
     return Provide<ChildCategory>(
