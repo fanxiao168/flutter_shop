@@ -80,7 +80,8 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
         });
         var childList = list[index].bxMallSubDto;
         var categoryId = list[index].mallCategoryId;
-        Provide.value<ChildCategory>(context).getChildCategory(childList,categoryId);
+        Provide.value<ChildCategory>(context)
+            .getChildCategory(childList, categoryId);
         _getGoodsList(categoryId: categoryId);
       },
       child: Container(
@@ -108,7 +109,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
       });
 
       Provide.value<ChildCategory>(context)
-          .getChildCategory(list[0].bxMallSubDto,list[0].mallCategoryId);
+          .getChildCategory(list[0].bxMallSubDto, list[0].mallCategoryId);
     });
   }
 
@@ -149,7 +150,8 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
             scrollDirection: Axis.horizontal,
             itemCount: childCategory.childCategoryList.length,
             itemBuilder: (context, index) {
-              return _rightInkWell(index,childCategory.childCategoryList[index]);
+              return _rightInkWell(
+                  index, childCategory.childCategoryList[index]);
             },
           ),
         );
@@ -159,38 +161,44 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
 
   Widget _rightInkWell(int index, BxMallSubDto item) {
     bool isClick = false;
-    isClick = (index==Provide.value<ChildCategory>(context).childIndex)? true:false;
+    isClick = (index == Provide.value<ChildCategory>(context).childIndex)
+        ? true
+        : false;
 
     return InkWell(
       onTap: () {
-        Provide.value<ChildCategory>(context).changeChildIndex(index);
+        Provide.value<ChildCategory>(context).changeChildIndex(index,item.mallSubId);
         _getGoodsList(item.mallSubId);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 10.0),
         child: Text(
-            item.mallSubName,
-            style: TextStyle(
-              fontSize: ScreenUtil().setSp(28),
-              color: isClick ? Colors.black12 : Colors.black,
-              ),
-            ),
+          item.mallSubName,
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(28),
+            color: isClick ? Colors.black12 : Colors.black,
+          ),
+        ),
       ),
     );
   }
 
-    void _getGoodsList(String categorySubId) {
+  void _getGoodsList(String categorySubId) {
     var data = {
       'categoryId': Provide.value<ChildCategory>(context).categoryId,
-      'categorySubId': categorySubId,
+      'categorySubId': categorySubId != '00' ? categorySubId : null,
       'page': 1
     };
 
+    print(data);
     request('getMallGoods', formData: data).then((val) {
       var data = json.decode(val.toString());
       CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(data);
-      Provide.value<CategoryGoodsListProvide>(context)
-          .getGoodsList(goodsList.data);
+      if (goodsList.data == null) {
+        Provide.value<CategoryGoodsListProvide>(context).getGoodsList([]);
+      } else {
+        Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
+      }
     });
   }
 }
@@ -211,7 +219,9 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget build(BuildContext context) {
     return Provide<CategoryGoodsListProvide>(
       builder: (context, child, data) {
-        return Expanded(
+
+        if(data.goodsList.length > 0){
+          return Expanded(
           child: Container(
             width: ScreenUtil().setWidth(570),
             child: ListView.builder(
@@ -222,6 +232,9 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
             ),
           ),
         );
+        }else{
+          return Text('暂时没有数据');
+        }
       },
     );
   }
