@@ -81,7 +81,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
         var childList = list[index].bxMallSubDto;
         var categoryId = list[index].mallCategoryId;
         Provide.value<ChildCategory>(context).getChildCategory(childList);
-        _getGoodsList(categoryId:categoryId);
+        _getGoodsList(categoryId: categoryId);
       },
       child: Container(
         height: ScreenUtil().setHeight(100),
@@ -185,28 +185,29 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
   Widget build(BuildContext context) {
     return Provide<CategoryGoodsListProvide>(
       builder: (context, child, data) {
-        return Container(
-          width: ScreenUtil().setWidth(570),
-          height: ScreenUtil().setHeight(975),
-          child: ListView.builder(
-            itemCount: data.goodsList.length,
-            itemBuilder: (context, index) {
-              return _listWidget(data.goodsList,index);
-            },
+        return Expanded(
+          child: Container(
+            width: ScreenUtil().setWidth(570),
+            child: ListView.builder(
+              itemCount: data.goodsList.length,
+              itemBuilder: (context, index) {
+                return _listWidget(data.goodsList, index);
+              },
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _goodsImage(List newList,int index) {
+  Widget _goodsImage(List newList, int index) {
     return Container(
       width: ScreenUtil().setWidth(200),
       child: Image.network(newList[index].image),
     );
   }
 
-  Widget _goodsName(List newList,int index) {
+  Widget _goodsName(List newList, int index) {
     return Container(
       width: ScreenUtil().setWidth(370),
       padding: EdgeInsets.all(5.0),
@@ -219,7 +220,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     );
   }
 
-  Widget _goodsPrice(List newList,int index) {
+  Widget _goodsPrice(List newList, int index) {
     return Container(
       margin: EdgeInsets.only(top: 20.0),
       width: ScreenUtil().setWidth(370),
@@ -240,7 +241,7 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     );
   }
 
-  Widget _listWidget(List newList,int index) {
+  Widget _listWidget(List newList, int index) {
     return InkWell(
       onTap: () {},
       child: Container(
@@ -251,9 +252,12 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
                 Border(bottom: BorderSide(width: 1.0, color: Colors.black12))),
         child: Row(
           children: <Widget>[
-            _goodsImage(newList,index),
+            _goodsImage(newList, index),
             Column(
-              children: <Widget>[_goodsName(newList,index), _goodsPrice(newList,index)],
+              children: <Widget>[
+                _goodsName(newList, index),
+                _goodsPrice(newList, index)
+              ],
             )
           ],
         ),
