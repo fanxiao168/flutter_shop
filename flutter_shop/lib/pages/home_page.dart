@@ -84,7 +84,6 @@ class _HomePageState extends State<HomePage>
                     var formData = {'page': page};
                     request('homePageBelowConten', formData: formData)
                         .then((val) {
-                      print(val);
                       var data = json.decode(val.toString());
                       List<Map> newGoodsList = (data['data'] as List).cast();
                       setState(() {
