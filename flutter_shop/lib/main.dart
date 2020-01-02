@@ -5,6 +5,8 @@ import './provide/counter.dart';
 import './provide/child_category.dart';
 import './provide/category_goods_list.dart';
 import 'package:fluro/fluro.dart';
+import './routers/application.dart';
+import './routers/rontes.dart';
 
 void main(){
   var counter = Counter();
@@ -22,9 +24,15 @@ void main(){
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final router = Router(); 
+    Routes.configureRoutes(router);
+    Application.router = router;
+
     return Container(
       child: MaterialApp(
         title: '百姓生活+',
+        onGenerateRoute: Application.router.generator,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.pink
