@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import '../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -117,7 +118,7 @@ class _HomePageState extends State<HomePage>
       List<Widget> listWidget = hotGoodsList.map((val) {
         return InkWell(
           onTap: () {
-            Application.router.navigateTo(context, "/detail?id=${val['goodsId']}");
+            Application.router.navigateTo(context, "/detail?id=${val['goodsId']}",transition: TransitionType.inFromRight);
           },
           child: Container(
             width: ScreenUtil().setWidth(372),
@@ -182,7 +183,7 @@ class SwiperDiy extends StatelessWidget {
             onTap: (){
               print(swiperDataList);
               //goodsId: /pages/groupBuy/pages/group-list/group-list
-              //Application.router.navigateTo(context, "/detail?id=${swiperDataList[index]['goodsId']}");
+              //Application.router.navigateTo(context, "/detail?id=${swiperDataList[index]['goodsId']}",transition: TransitionType.inFromRight);
             },
             child: Image.network(
             "${swiperDataList[index]['image']}",
@@ -301,7 +302,7 @@ class Recommend extends StatelessWidget {
   Widget _item(context,index) {
     return InkWell(
       onTap: () {
-        Application.router.navigateTo(context, "/detail?id=${recommendList[index]['goodsId']}");
+        Application.router.navigateTo(context, "/detail?id=${recommendList[index]['goodsId']}",transition: TransitionType.inFromRight);
       },
       child: Container(
         height: ScreenUtil().setHeight(300),
@@ -410,7 +411,7 @@ class FloorContent extends StatelessWidget {
       width: ScreenUtil().setWidth(375),
       child: InkWell(
         onTap: () {
-          Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}");
+          Application.router.navigateTo(context, "/detail?id=${goods['goodsId']}",transition: TransitionType.inFromRight);
         },
         child: Image.network(goods['image']),
       ),
