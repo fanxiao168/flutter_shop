@@ -174,7 +174,7 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
         _getGoodsList(item.mallSubId);
       },
       child: Container(
-        padding: EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 10.0),
+        padding: EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
         child: Text(
           item.mallSubName,
           style: TextStyle(
