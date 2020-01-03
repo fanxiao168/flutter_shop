@@ -3,6 +3,7 @@ import 'package:provide/provide.dart';
 import '../provide/details_info.dart';
 import './datails_page/details_top_area.dart';
 import './datails_page/details_explain.dart';
+import './datails_page/details_tabbar.dart';
 
 class DetailsPage extends StatelessWidget {
   
@@ -27,10 +28,11 @@ class DetailsPage extends StatelessWidget {
         builder: (context,snapshot){
           if(snapshot.hasData){
             return Container(
-              child: Column(
+              child: ListView(
                 children: <Widget>[
                   DetailsTopArea(),
-                  DetailsExplain()
+                  DetailsExplain(),
+                  DetailsTabBar()
                 ],
               ),
             );
