@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../provide/cart.dart';
+import '../pages/cart_page/cart_item.dart';
+import '../pages/cart_page/cart_bottom.dart';
 
 class CartPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,18 +14,25 @@ class CartPage extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: _getCartInfo(context),
-        builder: (context,snapshot){
+        builder: (context, snapshot) {
           List cartList = Provide.value<CartProvide>(context).cartList;
-          if(snapshot.hasData){
-            return ListView.builder(
-              itemCount: cartList.length,
-              itemBuilder: (context,index){
-                return ListTile(
-                  title: Text(cartList[index].goodsName),
-                );
-              },
+          if (snapshot.hasData && cartList != null) {
+            return Stack(
+              children: <Widget>[
+                ListView.builder(
+                  itemCount: cartList.length,
+                  itemBuilder: (context, index) {
+                    return CartItem(cartList[index]);
+                  },
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: CartBottom(),
+                )
+              ],
             );
-          }else{
+          } else {
             return Text('正在加载');
           }
         },
@@ -32,7 +40,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Future<String> _getCartInfo(BuildContext context) async{
+  Future<String> _getCartInfo(BuildContext context) async {
     await Provide.value<CartProvide>(context).getCartInfo();
     return 'end';
   }
