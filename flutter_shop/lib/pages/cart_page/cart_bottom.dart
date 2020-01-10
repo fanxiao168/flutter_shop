@@ -52,13 +52,13 @@ class CartBottom extends StatelessWidget {
             children: <Widget>[
               Container(
                 alignment: Alignment.centerRight,
-                width: ScreenUtil().setWidth(280),
+                width: ScreenUtil().setWidth(250),
                 child: Text('合计',
                     style: TextStyle(fontSize: ScreenUtil().setSp(36))),
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                width: ScreenUtil().setWidth(150),
+                width: ScreenUtil().setWidth(180),
                 child: Text('¥$allPrice',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(36), color: Colors.red)),
