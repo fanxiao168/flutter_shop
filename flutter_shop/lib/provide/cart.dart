@@ -26,6 +26,8 @@ class CartProvide with ChangeNotifier {
     //声明变量,用于判断购物车中是否已经存在此商品ID
     var isHave = false; //默认为没有
     int ival = 0; //用于进行循环的索引使用
+    allPrice = 0;
+    allGoodsCount = 0; //把商品总数量设置为0
     tempList.forEach((item){//进行循环,找出是否已经存在该商品
       //如果存在数量进行+1操作
       if(item['goodsId']==goodsId){
@@ -33,6 +35,12 @@ class CartProvide with ChangeNotifier {
         cartList[ival].count++;
         isHave = true;
       }
+
+      if(item['isCheck']){
+        allPrice += (cartList[ival].price * cartList[ival].count);
+        allGoodsCount += cartList[ival].count;
+      }
+
       ival ++;
     });
 
@@ -48,6 +56,9 @@ class CartProvide with ChangeNotifier {
       };
       tempList.add(newGoods);
       cartList.add(CartInfoModel.fromJson(newGoods));
+
+      allPrice += (count * price);
+      allGoodsCount += count;
     }
 
     //把字符串进行encode操作,
@@ -91,6 +102,11 @@ class CartProvide with ChangeNotifier {
     //prefs.clear();清空键值对
     prefs.remove('cartInfo');
     cartList = [];
+
+    allGoodsCount = 0;
+    allPrice = 0;
+    isAllCheck = false;
+
     print('清空完成----------');
     notifyListeners();
   }
