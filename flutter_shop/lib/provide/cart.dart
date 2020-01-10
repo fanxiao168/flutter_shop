@@ -47,13 +47,13 @@ class CartProvide with ChangeNotifier {
         'isCheck':true //是否已经选择
       };
       tempList.add(newGoods);
-      cartList.add(new CartInfoModel.fromJson(newGoods));
+      cartList.add(CartInfoModel.fromJson(newGoods));
     }
 
     //把字符串进行encode操作,
     cartString = json.encode(tempList).toString();
-    print(cartString);
-    print(cartList.toString());
+    // print('字符串>>>>>>>>>>>>$cartString');
+    // print('数据模型>>>>>>>>>>>${cartList.toString()}');
     prefs.setString('cartInfo', cartString);//进行持久化
     notifyListeners();
   }
@@ -67,7 +67,7 @@ class CartProvide with ChangeNotifier {
     cartList = [];
     //判断得到的字符串是否有值,如果不判断会报错
     if(cartString==null){
-      cartList=null;
+      cartList=[];
     }else{
       List<Map> tempList = (json.decode(cartString.toString()) as List).cast();
       allPrice = 0;
@@ -80,7 +80,7 @@ class CartProvide with ChangeNotifier {
         }else{
           isAllCheck = false;
         }
-        cartList.add(new CartInfoModel.fromJson(item));
+        cartList.add(CartInfoModel.fromJson(item));
       });
     }
     notifyListeners();
