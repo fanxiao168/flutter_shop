@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartCount extends StatelessWidget {
   const CartCount({Key key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Container(

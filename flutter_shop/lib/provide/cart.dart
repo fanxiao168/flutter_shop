@@ -74,7 +74,7 @@ class CartProvide with ChangeNotifier {
       allGoodsCount = 0;
       isAllCheck = true;
       tempList.forEach((item){
-        if(item['isCheck']){
+        if(item['isCheck'] == true){
           allPrice+=item['count']*item['price'];
           allGoodsCount+=item['count'];
         }else{
@@ -90,6 +90,7 @@ class CartProvide with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //prefs.clear();清空键值对
     prefs.remove('cartInfo');
+    cartList = [];
     print('清空完成----------');
     notifyListeners();
   }
