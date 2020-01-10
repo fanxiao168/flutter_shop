@@ -75,7 +75,7 @@ class CartProvide with ChangeNotifier {
       isAllCheck = true;
       tempList.forEach((item){
         if(item['isCheck'] == true){
-          allPrice+=item['count']*item['price'];
+          allPrice+= (item['count']*item['price']);
           allGoodsCount+=item['count'];
         }else{
           isAllCheck = false;

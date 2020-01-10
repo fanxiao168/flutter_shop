@@ -7,17 +7,18 @@ class CartBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5.0),
-      color: Colors.white,
-      width: ScreenUtil().setWidth(750),
-      child: Row(
-        children: <Widget>[
-          _selectAllBtn(context),
-          _allPriceArea(context),
-          _goButton(context)
-        ],
-      ),
-    );
+        margin: EdgeInsets.all(5.0),
+        color: Colors.white,
+        width: ScreenUtil().setWidth(750),
+        child: Provide<CartProvide>(builder: (context, child, val) {
+          return Row(
+            children: <Widget>[
+              _selectAllBtn(context),
+              _allPriceArea(context),
+              _goButton(context)
+            ],
+          );
+        }));
   }
 
   //全选按钮
@@ -89,7 +90,8 @@ class CartBottom extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: Colors.red, borderRadius: BorderRadius.circular(3.0)),
-          child: Text('结算($allGoodsCount)', style: TextStyle(color: Colors.white)),
+          child:
+              Text('结算($allGoodsCount)', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
